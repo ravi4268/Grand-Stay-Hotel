@@ -10,7 +10,7 @@ function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     role: "Regular Guest",
-    email: "",
+    email: "", 
     phone: "",
     notes: "",
   });
