@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:3001/api/contact";
+const API_URL = "http://localhost:3001/api/contact";
 
 function Contact() {
   const didFetch = useRef(false);

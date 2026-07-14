@@ -16,7 +16,6 @@ import ContactPayment from './pages/ContactPayment';
 import GamePalace from './pages/GamePlace';
 import RooftopClub from './pages/RooftopClub';
 import Bathroom from './pages/Bathroom';
-const API_BASE_URL = "http://localhost:3001";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem('hotel_admin_logged') === 'true';
