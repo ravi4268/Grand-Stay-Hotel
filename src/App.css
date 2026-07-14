@@ -28,6 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  margin-left: 260px;
 }
 
 .content-body {
