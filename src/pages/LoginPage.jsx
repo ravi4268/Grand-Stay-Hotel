@@ -1,66 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import "./LoginPage.css";
 
 function LoginPage({ onLogin }) {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials({ ...credentials, [name]: value });
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
-      setError('');
-      onLogin(); 
+
+    const USERNAME = "admin123";
+    const PASSWORD = "admin";
+
+    if (
+      credentials.username.trim() === USERNAME &&
+      credentials.password === PASSWORD
+    ) {
+      setError("");
+
+      localStorage.setItem("isLoggedIn", "true");
+
+      onLogin();
     } else {
-      setError('❌ Invalid Username or Password!');
+      setError("❌ Invalid Username or Password");
     }
   };
 
   return (
     <div className="login-wrapper">
       <div className="login-card">
+
         <div className="login-header">
-          <h2>🏨 Grand Stay</h2>
-          <p>Hotel Management Suite</p>
+          <h2>🏨 Grand Stay Hotel</h2>
+          <p>Hotel Management System</p>
         </div>
-        
-        <form onSubmit={handleSubmit} className="login-form">
-          {error && <div className="login-error">{error}</div>}
-          
+
+        {error && <div className="login-error">{error}</div>}
+
+        <form onSubmit={handleSubmit}>
+
           <div className="input-group">
             <label>Username</label>
-            <input 
-              type="text" 
-              name="username" 
-              placeholder="Enter admin username" 
-              value={credentials.username} 
-              onChange={handleInputChange} 
-              required 
+
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter Username"
+              value={credentials.username}
+              onChange={handleChange}
+              required
             />
           </div>
 
           <div className="input-group">
             <label>Password</label>
-            <input 
-              type="password" 
-              name="password" 
-              placeholder="Enter password" 
-              value={credentials.password} 
-              onChange={handleInputChange} 
-              required 
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter Password"
+              value={credentials.password}
+              onChange={handleChange}
+              required
             />
           </div>
 
-          <button type="submit" className="login-btn">Sign In to Dashboard</button>
+          <button className="login-btn" type="submit">
+            Login
+          </button>
+
         </form>
-        
+
         <div className="login-footer">
-          <p>Demo Access Hint: <strong>admin</strong> / <strong>admin123</strong></p>
+          <p>
+            Demo Login
+            <br />
+            Username : <b>sanidhya123</b>
+            <br />
+            Password : <b>sanidhya</b>
+          </p>
         </div>
+
       </div>
     </div>
   );
