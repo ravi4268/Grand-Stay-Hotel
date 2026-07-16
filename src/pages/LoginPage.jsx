@@ -3,11 +3,12 @@ import "./LoginPage.css";
 
 function LoginPage({ onLogin }) {
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setCredentials({
@@ -16,25 +17,37 @@ function LoginPage({ onLogin }) {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const USERNAME = "admin123";
-    const PASSWORD = "admin";
+  setLoading(true);
+  setError("");
 
-    if (
-      credentials.username.trim() === USERNAME &&
-      credentials.password === PASSWORD
-    ) {
-      setError("");
+  try {
+    const response = await fetch("http://localhost:3001/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
 
-      localStorage.setItem("isLoggedIn", "true");
+    const data = await response.json();
 
+    if (response.ok && data.success) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("hotel_admin_logged", "true");
       onLogin();
     } else {
-      setError("❌ Invalid Username or Password");
+      setError(data.message);
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setError("Unable to connect to backend");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="login-wrapper">
@@ -50,13 +63,13 @@ function LoginPage({ onLogin }) {
         <form onSubmit={handleSubmit}>
 
           <div className="input-group">
-            <label>Username</label>
+            <label>Email</label>
 
             <input
-              type="text"
-              name="username"
-              placeholder="Enter Username"
-              value={credentials.username}
+              type="email"
+              name="email"
+              placeholder="Enter Email"
+              value={credentials.email}
               onChange={handleChange}
               required
             />
@@ -76,20 +89,10 @@ function LoginPage({ onLogin }) {
           </div>
 
           <button className="login-btn" type="submit">
-            Login
+            {loading ? "Logging..." : "Login"}
           </button>
 
         </form>
-
-        <div className="login-footer">
-          <p>
-            Demo Login
-            <br />
-            Username : <b>sanidhya123</b>
-            <br />
-            Password : <b>sanidhya</b>
-          </p>
-        </div>
 
       </div>
     </div>
